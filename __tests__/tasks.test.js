@@ -34,16 +34,28 @@ describe('items', () => {
     pool.end();
   });
 
-  it('#POST /api/v1/items creates new tasks for the current user', async () => {
+  it('example test - delete me!', () => {
+    expect(1).toEqual(1);
+  });
+
+  it('#POST /api/v1/tasks creates new tasks for the current user', async () => {
     const [agent, user] = await registerAndLogin();
-    const newTask = { content: 'hydrate', completed: false };
+
+    const newTask = {
+      content: 'hydrate',
+    };
+
     const resp = await agent.post('/api/v1/tasks').send(newTask);
+
+    console.log(resp.body);
+    console.log('user.id', user.id);
+
     expect(resp.status).toEqual(200);
     expect(resp.body).toEqual({
       id: expect.any(String),
       user_id: user.id,
-      ...newTask,
-      created_at: expect.any(String)
+      content: expect.any(String),
+      completed: false,
     });
   });
 });
