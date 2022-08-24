@@ -64,12 +64,12 @@ describe('items', () => {
     // add a second user with items
     const user2 = await UserService.create(mockUser2);
     const user1Task = await Task.insert({
-      description: 'test task 1',
+      content: 'test task 1',
       user_id: user.id,
     });
 
     await Task.insert({
-      description: 'test task 2',
+      content: 'test task 2',
       user_id: user2.id,
     });
 
