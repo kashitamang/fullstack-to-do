@@ -73,8 +73,10 @@ describe('items', () => {
       user_id: user2.id,
     });
 
+    
     const resp = await agent.get('/api/v1/tasks');
     expect(resp.status).toEqual(200);
     expect(resp.body).toEqual([user1Task]);
+    // console.log('resp.body', resp.body);
   });
 });
