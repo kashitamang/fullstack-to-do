@@ -12,15 +12,10 @@ const mockUser = {
 
 const registerAndLogin = async (userProps = {}) => {
   const password = userProps.password ?? mockUser.password;
-
-  // Create an "agent" that gives us the ability
-  // to store cookies between requests in a test
   const agent = request.agent(app);
-
-  // Create a user to sign in with
   const user = await UserService.create({ ...mockUser, ...userProps });
 
-  // ...then sign in
+  //sign in
   const { email } = user;
   await agent.post('/api/v1/users/sessions').send({ email, password });
   return [agent, user];
@@ -46,9 +41,6 @@ describe('items', () => {
     };
 
     const resp = await agent.post('/api/v1/tasks').send(newTask);
-
-    console.log(resp.body);
-    console.log('user.id', user.id);
 
     expect(resp.status).toEqual(200);
     expect(resp.body).toEqual({
