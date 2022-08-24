@@ -60,4 +60,12 @@ describe('backend-express-template routes', () => {
     expect(resp.status).toBe(401);
     // console.log(resp);
   });
+
+  it('#DELETE /api/v1/users/sessions should delete a session', async () => {
+    const [agent, user] = await registerAndLogin();
+    const deleteResp = await agent.delete('/api/v1/users/sessions');
+    expect(deleteResp.status).toBe(204);
+    const resp = await agent.get('/api/v1/users/me');
+    expect(resp.status).toBe(401);
+  });
 });
