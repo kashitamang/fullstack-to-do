@@ -41,6 +41,7 @@ describe('backend-express-template routes', () => {
     expect(res.body).toEqual({
       id: expect.any(String),
       email,
+      message: 'Signed in successfully!'
     });
   });
 
@@ -57,5 +58,6 @@ describe('backend-express-template routes', () => {
   it('#GET /me should return a 401 if not logged in', async () => {
     const resp = await request(app).get('/api/v1/users/me');
     expect(resp.status).toBe(401);
+    // console.log(resp);
   });
 });
