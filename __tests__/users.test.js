@@ -44,7 +44,7 @@ describe('backend-express-template routes', () => {
     });
   });
 
-  it('#GET returns the current user', async () => {
+  it('#GET /me returns the current user', async () => {
     const [agent, user] = await registerAndLogin();
     const me = await agent.get('/api/v1/users/me');
     expect(me.body).toEqual({
@@ -52,5 +52,10 @@ describe('backend-express-template routes', () => {
       exp: expect.any(Number),
       iat: expect.any(Number),
     });
+  });
+
+  it('#GET /me should return a 401 if not logged in', async () => {
+    const resp = await request(app).get('/api/v1/users/me');
+    expect(resp.status).toBe(401);
   });
 });
