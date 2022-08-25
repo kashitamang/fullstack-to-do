@@ -80,6 +80,33 @@ describe('items', () => {
     // console.log('resp.body', resp.body);
   });
 
+  it('UPDATE /api/v1/tasks/:id should update an item', async () => {
+    const [agent, user] = await registerAndLogin();
+    const task = await Task.insert({
+      content: 'apples',
+      user_id: user.id,
+    });
+    const resp = await agent
+      .put(`/api/v1/tasks/${task.id}`)
+      .send({ completed: true });
+    expect(resp.status).toBe(200);
+    expect(resp.body).toEqual({ ...task, completed: true });
+  });
+
+  it('UPDATE /api/v1/tasks/:id should 403 for invalid users', async () => {
+    const [agent] = await registerAndLogin();
+    // create a second user
+    const user2 = await UserService.create(mockUser2);
+    const task = await Task.insert({
+      content: 'hydrate',
+      user_id: user2.id,
+    });
+    const resp = await agent
+      .put(`/api/v1/tasks/${task.id}`)
+      .send({ completed: true });
+    expect(resp.status).toBe(403);
+  });
+
   it('#DELETE /api/v1/tasks/:id should delete items for valid user', async () => {
     const [agent, user] = await registerAndLogin();
     const task = await Task.insert({
@@ -92,4 +119,6 @@ describe('items', () => {
     const check = await Task.getById(task.id);
     expect(check).toBeNull();
   });
+
+
 });
