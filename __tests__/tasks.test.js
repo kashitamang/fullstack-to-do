@@ -79,4 +79,17 @@ describe('items', () => {
     expect(resp.body).toEqual([user1Task]);
     // console.log('resp.body', resp.body);
   });
+
+  it('#DELETE /api/v1/items/:id should delete items for valid user', async () => {
+    const [agent, user] = await registerAndLogin();
+    const task = await Task.insert({
+      content: 'test content',
+      user_id: user.id,
+    });
+    const resp = await agent.delete(`/api/v1/tasks/${task.id}`);
+    expect(resp.status).toBe(200);
+
+    const check = await Task.getById(task.id);
+    expect(check).toBeNull();
+  });
 });
